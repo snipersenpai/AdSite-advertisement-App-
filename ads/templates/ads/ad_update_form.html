@@ -1,0 +1,12 @@
+{% extends "base_bootstrap.html" %}
+{% block content %}
+    <h1>Ad Create</h1>
+    {% load crispy_forms_tags %}
+    <form class="" method="post" enctype="multipart/form-data" >
+      {% csrf_token %}
+      {{ form|crispy }}
+      <input type="submit" name="Submit" value="Submit">
+      <input type="submit" onclick="window.location='{%url 'ads:all' %}'; return false;" name="Cancel" value="Cancel">
+    </form>
+
+{% endblock %}

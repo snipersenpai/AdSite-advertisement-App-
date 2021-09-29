@@ -1,0 +1,12 @@
+{% extends "base_bootstrap.html" %}
+{% block content %}
+    <h1>Ad Delete</h1>
+{% load crispy_forms_tags %}
+    <form class="" action="{% url 'ads:ad_delete' object.pk%}" method="post">
+      {% csrf_token %}
+      {{  form|crispy }}
+      <p>Are you sure you want to delete ad: {{ object.title }}?</p>
+      <input type="submit" name="" value="Yes, delete.">
+      <input type="submit" onclick="window.location='{%url 'ads:all' %}'; return false;" name="Cancel" value="Cancel">
+    </form>
+{% endblock %}

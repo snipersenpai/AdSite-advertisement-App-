@@ -1,0 +1,18 @@
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+  <p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+<form class="container" method="post" action="{% url 'registration:signup' %}">
+  <div style="display:block; margin:auto;" class="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" class="btn btn-primary" value="Sign Up" />
+    <input type="hidden" name="next" value="{{ next }}" />
+  </div>
+</form>
+
+{% endblock %}
