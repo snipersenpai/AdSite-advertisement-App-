@@ -3,12 +3,17 @@ from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
 from django.conf import settings
 # Create your models here.
-
+class Category(models.Model):
+    name = models.CharField(max_length=200, db_index=True)
+    slug = models.SlugField(max_length=200,unique=True)
+    def __str__(self):
+        return self.name
 class Ad(models.Model):
     title = models.CharField(
         max_length = 200,
         validators = [MinLengthValidator(2,"Title must be greater than 2 characters")]
     )
+    category = models.ForeignKey(Category,related_name='ads', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits= 7, decimal_places=2,null=True)
     text = models.TextField()
     #Picture
@@ -40,7 +45,6 @@ class Comment(models.Model) :
     text = models.TextField(
         validators=[MinLengthValidator(3, "Comment must be greater than 3 characters")]
     )
-
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 

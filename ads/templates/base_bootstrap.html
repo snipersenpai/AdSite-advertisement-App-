@@ -1,81 +1,99 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
 <!-- Edit dj4e-samples/settings.py and add APP_NAME = 'DJ4E Samples' or similar -->
 <title>{% block title %}{{ settings.APP_NAME }}{% endblock %}</title>
 
-<!-- Replace this value (42-42) with the one provided by the autograder -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="dj4e" content="c77cfd5563c8ec4bfcde94c09098ba84">
-<meta name="dj4e-code" content="42161111561514">
-
-
-<link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
-    crossorigin="anonymous">
-
-<link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap-theme.min.css"
-    crossorigin="anonymous">
-
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
     href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css"
-     crossorigin="anonymous">
+     crossorigin="anonymous"> -->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-    crossorigin="anonymous"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+    crossorigin="anonymous"></script> -->
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"
-    crossorigin="anonymous"></script>
-
-<script
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- <script
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
-  crossorigin="anonymous"></script>
+  crossorigin="anonymous"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
 
+<link rel="stylesheet" href="{% static 'forms/forms.css'%}">
 <meta name="dj4e-version" content="2020-10-01">
-
+<style media="screen">
+    .navbar-nav > li{
+      padding-left:1em;
+      padding-right:1em;
+    }
+</style>
 {% block head %} {% endblock %}
 
 </head>
 <body>
-<div class="container">
 {% load app_tags %}
-<nav class="navbar navbar-default navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="/">{{ settings.APP_NAME }}</a>
+<nav class="navbar navbar-expand-sm navbar-light bg-info text-light">
+    <a class="navbar-brand" href="/ads">AD Site</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Shop
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'ads:all' %}">All Products</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+            <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+          </ul>
+        </li>
+        <li  class="nav-item {% if request.get_full_path == ads %}class="active"{% endif %}">
+            <a class="nav-link" href="{% url 'ads:ad_create' %}">Create Ad</a>
+        </li>
+        <li  class="nav-item {% if request.get_full_path == ads %}class="active"{% endif %}" >
+            <a class="nav-link" href="{% url 'ads:all' %}">Manage</a>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right ml-auto navbar-expand-sm">
+          <li class="nav-item">
+            <form class="form-inline">
+                <button class="btn btn-outline-dark" type="submit">
+                    <i class="bi-cart-fill me-1"></i>
+                    Cart
+                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                </button>
+            </form>
+          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle nav-link text-light">
+                    <img style="width: 25px;" src="{{ user|gravatar:60 }}"/><b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu text-light">
+                    <li><a class="nav-link" href="{% url 'logout' %}?next={% url 'ads:all' %}">LogoutX</a></li>
+                </ul>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="text-light" href="{% url 'login' %}?next={% url 'ads:all' %}">Login</a>
+            </li>
+          {% endif %}
+      </ul>
     </div>
-    <!-- https://stackoverflow.com/questions/22047251/django-dynamically-get-view-url-and-check-if-its-the-current-page -->
-    <ul class="nav navbar-nav">
-      {% url 'ads' as ads %}
-      <li {% if request.get_full_path == ads %}class="active"{% endif %}>
-          <a href="{% url 'ads:all' %}">Ads</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-        {% if user.is_authenticated %}
-        <li>
-        <a href="{% url 'ads:ad_create' %}">Create Ad</a>
-        </li>
-        <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                <img style="width: 25px;" src="{{ user|gravatar:60 }}"/><b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="{% url 'logout' %}?next={% url 'ads:all' %}">LogoutX</a></li>
-            </ul>
-        </li>
-        {% else %}
-        <li>
-        <a href="{% url 'login' %}?next={% url 'ads:all' %}">Login</a>
-        </li>
-        {% endif %}
-    </ul>
-  </div>
+
 </nav>
+<div class="container">
+
+
 {% block welcome %} {% endblock %}
 {% block messages %}
     {% if messages %}
@@ -91,4 +109,9 @@
 </div>
 {% block footer %} {% endblock %}
 </body>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 </html>

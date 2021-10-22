@@ -1,0 +1,30 @@
+form{
+  margin: auto;
+  display: block;
+}
+form>div{
+  display: flex;
+  flex-direction: column;
+}
+form>div>*:nth-child(2){
+  width:90%;
+  margin-left: 5%;
+}
+input, select{
+  padding: 0.5em;
+}
+form>div>*:nth-child(2)>*:not(input[type=file]):not(input[type=number]){
+  width:100%;
+}
+input[type=file]{
+  width: auto;
+}
+input[type=number]{
+  width:10em
+}
+.form-action{
+  display: flex;
+  text-align: left;
+  align-items:center;
+  justify-content:center;
+}

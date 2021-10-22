@@ -8,7 +8,7 @@ from django.core import validators
 
 # strip means to remove whitespace from the beginning and the end before storing the column
 class CommentForm(forms.Form):
-    comment = forms.CharField(required=True, max_length=500, min_length=3, strip=True)
+    comment = forms.CharField(required=True, max_length=500, min_length=3, strip=True,widget=forms.Textarea)
 class CreateForm(ModelForm):
     max_upload_limit = 2 * 1024 * 1024
     max_upload_limit_text = naturalsize(max_upload_limit)
@@ -16,7 +16,7 @@ class CreateForm(ModelForm):
     upload_field_name = 'picture'
     class Meta:
         model = Ad
-        fields = ['title', 'price', 'text', 'picture']  # Picture is manual
+        fields = ['title', 'category','price', 'text', 'picture']  # Picture is manual
     def clean(self):
         cleaned_data = super().clean()
         pic = cleaned_data.get('picture')
