@@ -16,11 +16,22 @@ from django.db.models import Q
 
 class MainView(OwnerListView):
     model = Ad
-    # def get(self,request):
+    category_slug=None
+
+    def get(self,request,category_slug=None):
+        self.category_slug = category_slug
+        return super().get(self,request,category_slug=None)
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.category_slug:
+            sel_category = get_object_or_404(Category,slug=self.category_slug)
+            qs = qs.filter(category=sel_category)
+        return qs
     def get_context_data(self,**kwargs):
-        print('requesting....',self.request, self.request.GET);
         context = super().get_context_data(**kwargs)
         context['search'] = self.request.GET.get('search',False)
+        if self.category_slug:
+            context['category'] = self.category_slug
         if context['search']:
             search = context['search']
             context['object_list'] = context['ad_list'] = context['object_list'].filter(Q(title__contains=search)|Q(text__contains=search))
@@ -29,9 +40,15 @@ class MainView(OwnerListView):
             rows = self.request.user.favorite_ads.values('id')
             favorites = [ row['id'] for row in rows ]
         context['favorites'] = favorites
-        print('current context: ', context )
+        context['categories'] = Category.objects.all()
         return context
 
+class UserAdsView(LoginRequiredMixin,MainView):
+    model = Ad
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(owner=self.request.user)
+        return qs
 class AdCreate(LoginRequiredMixin,View):
     template_name = 'ads/ad_create_form.html'
     success_url = reverse_lazy('ads:all')
@@ -138,8 +155,6 @@ class DeleteFavoriteView(LoginRequiredMixin, View):
             pass
 
         return HttpResponse()
-
-
 def stream_file(request, pk):
     pic = get_object_or_404(Ad, id=pk)
     response = HttpResponse()

@@ -2,12 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
 from django.conf import settings
+from django.urls import reverse
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=200,unique=True)
     def __str__(self):
         return self.name
+    def get_absolute_url(self):
+        return reverse('ads:ad_list_by_category', args=[self.slug])
+
 class Ad(models.Model):
     title = models.CharField(
         max_length = 200,

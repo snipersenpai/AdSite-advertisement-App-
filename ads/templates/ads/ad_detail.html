@@ -17,27 +17,28 @@
 
 {% block content %}
     <h1>Ads Detail</h1>
-
-
-    <section class="py-5">
+    <section class="py-1">
       <div class="container px-4 px-lg-5 my-5">
           <div class="row gx-4 gx-lg-5 align-items-center">
               <div class="col-md-6" >
                 {% if object.content_type %}
-                  <img src="{% url 'ads:ad_picture' object.id %}">
+                  <img class="card-img-top mb-5 mb-md-0" src="{% url 'ads:ad_picture' object.id %}">
                 {% else %}
                   <img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." />
                 {% endif %}
               </div>
               <div class="col-md-6">
-                  <div class="small mb-1">
+                  <div class="small mb-1 ">
                     ({{ ad.updated_at|naturaltime }})
                     {% if ad.owner == user %}
                         <a href="{% url 'ads:ad_update' object.id %}"><i class="fa fa-pencil"></i></a> |
                         <a href="{% url 'ads:ad_delete' object.id %}"><i class="fa fa-trash"></i></a></li>
                     {%endif%}
                   </div>
-                  <h1 class="display-5 fw-bolder">{{ object.title }}</h1>
+                  <h1 class="display-5 fw-bolder text-info">{{ object.title }}</h1>
+                    <a class="text-primary font-weight-bold"href="{{ object.category.get_absolute_url }}">
+                      {{object.category.name}}
+                    </a>
                   <div class="fs-5 mb-5">
                       <span>${{ object.price }}</span>
                   </div>

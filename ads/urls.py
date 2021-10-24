@@ -5,6 +5,8 @@ app_name = 'ads'
 
 urlpatterns = [
     path('',MainView.as_view(),name='all'),
+    path('category/<slug:category_slug>',MainView.as_view(),name='ad_list_by_category'),
+    path('mine',UserAdsView.as_view(),name='mine'),
     path('create',AdCreate.as_view(), name='ad_create'),
     # path('ad/<int:pk>/edit',AdUpdate.as_view(), name='ad_update'),
     path('ad/<int:pk>/update',AdUpdate.as_view(), name='ad_update'),

@@ -1,23 +1,30 @@
 {% extends "base_bootstrap.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
+<div class="container py-3">
+  <h2>Please Fill In The Form To Log In</h2>
+  {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+  <div class="container my-5 bg-light">
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="d-block text-center m-2">
+        <input type="submit" class="btn btn-primary" value="Login" />
+        <input type="hidden" name="next" value="{{ next }}" />
+      </div>
+    </form>
+  </div>
 
-{% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
-{% endif %}
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" class="btn btn-primary" value="Login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
+  {% if settings.SOCIAL_AUTH_GITHUB_KEY %}
+  <hr/>
+  <a class="btn btn-info" role="button" href="{% url 'social:begin' 'github' %}?next={{ next }}">
+      <i class="fa fa-github" aria-hidden="true"></i>
+      Login with GitHub</a>
+  {% endif %}
 
-{% if settings.SOCIAL_AUTH_GITHUB_KEY %}
-<hr/>
-<a class="btn btn-info" role="button" href="{% url 'social:begin' 'github' %}?next={{ next }}">
-    <i class="fa fa-github" aria-hidden="true"></i>
-    Login with GitHub</a>
-{% endif %}
+</div>
 
 {% endblock %}

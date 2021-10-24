@@ -19,82 +19,100 @@
 
     <div class="container mt-3">
       <div class="d-flex flex-column">
+        <div class="row">
+          <div class="col-xs-12 col-md-3 bg-light">
+            <h3>Categories</h3>
+            <ul class="list-group">
+              <li class="list-group-item {% if not category %}bg-info{% endif %}">
+                <a class="{% if not category %}text-dark font-weight-bold {% else %} text-secondary {% endif %}" href="{% url 'ads:all' %}">All</a>
+              </li>
+              {% for cat in categories %}
+                <li class="list-group-item {% if category == cat.slug %}bg-info{% endif %}">
+                  <a class="{% if category == cat.slug %}text-dark font-weight-bold {% else %} text-secondary {% endif %}" href="{{ cat.get_absolute_url }}">
+                    {{cat.name}}
+                  </a>
+                </li>
+              {% endfor %}
 
-        <div class="col-12 row">
-          {% for ad in object_list %}
-            <div class="col-xs-12 col-md-6 col-lg-4">
-              <div class="mb-5">
-                <div  style='text-decoration:none' class="card text-dark">
-                  <img src="{% url 'ads:ad_picture' ad.id %}" class="card-img-top" alt="...">
-                  <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
-                  <div class="card-body  p-4 bg-light">
-                    <h5 class="card-title">
-                      {{ad.title}}
-                    </h5>
-                    <div class="card-text">
-                      <div class="text-center">
-                      ${{ad.price}}
+            </ul>
+          </div>
+          <div class="col-xs-12 col-md-9">
+            <div class="col-12 row">
+              {% for ad in object_list %}
+                <div class="col-xs-12 col-md-6 col-lg-4">
+                  <div class="mb-5">
+                    <div  style='text-decoration:none' class="card text-dark">
+                      <img src="{% url 'ads:ad_picture' ad.id %}" class="card-img-top" alt="...">
+                      <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
+                      <div class="card-body  p-4 bg-light">
+                        <h5 class="card-title">
+                          {{ad.title}}
+                        </h5>
+                        <div class="card-text">
+                          <div class="text-center">
+                          ${{ad.price}}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="card-footer p-4 pt-0 border-top-0 bg-light">
-                    <div class="text-center">
-                      <a class="btn btn-outline-dark mt-auto" href="{% url 'ads:ad_detail' ad.id %}">View options</a>
-                    </div>
-                    {% if ad.owner == user %}
-                    <a href="{% url 'ads:ad_update' ad.id %}">Edit</a> |
-                    <a href="{% url 'ads:ad_delete' ad.id %}">Delete</a>
-                    {%endif%}
-                  </div>
-                  {% if user.is_authenticated %}
-                    <div class="" style="position:absolute; right:0; top:0">
-                      <a href="#" onclick=
-                          "favPost('{% url 'ads:ad_unfavorite' ad.id %}', {{ ad.id }} );return false;"
-                          {% if ad.id not in favorites %} style="display: none;" {% endif %}
-                          id="favorite_star_{{ad.id}}">
-                      <span class="fa-stack" style="vertical-align: middle;">
-                      <i class="fa fa-star fa-stack-1x" style="color: orange;"></i>
-                      <i class="fa fa-star-o fa-stack-1x"></i>
-                      </span>
-                      </a>
-                      <!-- the second href -->
-                      <a href="#" onclick=
-                           "favPost('{% url 'ads:ad_favorite' ad.id %}', {{ ad.id }} );return false;"
-                          {% if ad.id in favorites %} style="display: none;" {% endif %}
-                          id="unfavorite_star_{{ad.id}}">
-                      <span class="fa-stack" style="vertical-align: middle;">
-                      <i class="fa fa-star fa-stack-1x" style="display: none; color: orange;"></i>
-                      <i class="fa fa-star-o fa-stack-1x"></i>
-                      </span>
-                      </a>
-                    </div>
-                  {%endif%}
+                      <div class="card-footer p-4 pt-0 border-top-0 bg-light">
+                        <div class="text-center">
+                          <a class="btn btn-outline-dark mt-auto" href="{% url 'ads:ad_detail' ad.id %}">View options</a>
+                        </div>
+                        {% if ad.owner == user %}
+                        <a href="{% url 'ads:ad_update' ad.id %}">Edit</a> |
+                        <a href="{% url 'ads:ad_delete' ad.id %}">Delete</a>
+                        {%endif%}
+                      </div>
+                      {% if user.is_authenticated %}
+                        <div class="" style="position:absolute; right:0; top:0">
+                          <a href="#" onclick=
+                              "favPost('{% url 'ads:ad_unfavorite' ad.id %}', {{ ad.id }} );return false;"
+                              {% if ad.id not in favorites %} style="display: none;" {% endif %}
+                              id="favorite_star_{{ad.id}}">
+                          <span class="fa-stack" style="vertical-align: middle;">
+                          <i class="fa fa-star fa-stack-1x" style="color: orange;"></i>
+                          <i class="fa fa-star-o fa-stack-1x"></i>
+                          </span>
+                          </a>
+                          <!-- the second href -->
+                          <a href="#" onclick=
+                               "favPost('{% url 'ads:ad_favorite' ad.id %}', {{ ad.id }} );return false;"
+                              {% if ad.id in favorites %} style="display: none;" {% endif %}
+                              id="unfavorite_star_{{ad.id}}">
+                          <span class="fa-stack" style="vertical-align: middle;">
+                          <i class="fa fa-star fa-stack-1x" style="display: none; color: orange;"></i>
+                          <i class="fa fa-star-o fa-stack-1x"></i>
+                          </span>
+                          </a>
+                        </div>
+                      {%endif%}
 
+                    </div>
+                  </div>
                 </div>
-              </div>
+              {% empty %}
+                  <div class="card">There are no ads in the database.</div>
+              {% endfor %}
             </div>
-          {% empty %}
-              <div class="card">There are no ads in the database.</div>
-          {% endfor %}
+            <div class="col-12">
+              <p>
+                  <a href="{% url 'ads:ad_create' %}" >
+                      Add an Ad
+                  </a>|
+                  {% if user.is_authenticated %}
+                      <a href="{% url 'logout' %}?next={% url 'ads:all' %}">
+                          Logout
+                      </a>
+                  {% else %}
+                      <a href="{% url 'login' %}?next={% url 'ads:all' %}">
+                          Login
+                      </a>
+                  {%endif%}
+              </p>
+            </div>
+          </div>
         </div>
 
-
-        <div class="col-12">
-          <p>
-              <a href="{% url 'ads:ad_create' %}" >
-                  Add an Ad
-              </a>|
-              {% if user.is_authenticated %}
-                  <a href="{% url 'logout' %}?next={% url 'ads:all' %}">
-                      Logout
-                  </a>
-              {% else %}
-                  <a href="{% url 'login' %}?next={% url 'ads:all' %}">
-                      Login
-                  </a>
-              {%endif%}
-          </p>
-        </div>
       </div>
     </div>
 
