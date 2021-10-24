@@ -1,0 +1,89 @@
+{% extends "base_bootstrap.html" %}
+{% load static %}
+{% block content %}
+  <div class="">
+    <h1>Your shopping cart</h1>
+    <div class="row" style="margin-top:2em">
+      <div class="col-xs-12 col-md-8">
+        <table class="table table-bordered table-hover table-striped">
+          <thead class="thead-light">
+            <tr>
+              <th>Image</th>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody style="margin-top:1em">
+            {% for item in cart %}
+              {% with ad=item.ad%}
+                <tr>
+                  <td>
+                    <a href="{{ ad.get_absolute_url }}">
+                      {% if ad.content_type %}
+                        <img style="width:4em; height:4em;" class="card-img-top" src="{% url 'ads:ad_picture' ad.id %}">
+                      {% else %}
+                        <img class="card-img-top" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." />
+                      {% endif %}
+                    </a>
+                  </td>
+                  <td>{{ ad.title }}</td>
+                  <td> {{ ad.price }}</td>
+                  <td>
+                    <form class="" action='{% url "cart:cart_remove" ad.id %}' method="post">
+                      {% csrf_token %}
+                      <button class="btn btn-danger" type="submit" name="button">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              {% endwith %}
+            {% empty %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="col-xs-12 col-md-4 bg-light m-0 px-2">
+          <h3>Summary</h3>
+          <hr>
+          <div class="">
+            <i class="font-weight-bolder">Have a coupon?</i>
+            <form class="" action="#!" method="post">
+              <div style="display:flex; flex-direction:row;" class="">
+                <input style="width:70%" type="text" class='' name="" placeholder='Enter coupon code...' value="">
+                <button style="width:30%" class="btn btn-secondary" type="button" name="button">Apply</button>
+              </div>
+            </form>
+            <hr>
+            <div class="card" style='margin:0; padding:0; width:100%;'>
+              <div class="card-body">
+                <div class="card-text">
+                  <dl class="row">
+                    <dt class="col-12 col-lg-5">Total Price</dt>
+                    <dd class="col-12 col-lg-7 text-right">${{ cart.get_total_price }}</dd>
+                  </dl>
+                  <dl class="row">
+                    <dt class="col-12 col-lg-5">Discount</dt>
+                    <dd class="col-12 col-lg-7 text-right">-$0.00 </dd>
+                  </dl>
+                  <dl class="row">
+                    <dt class="col-12 col-lg-5">Total</dt>
+                    <dd class="col-12 col-lg-7 text-right">${{ cart.get_total_price }}</dd>
+                  </dl>
+                </div>
+              </div>
+              <div class="card-footer text-right">
+                <a class="btn btn-success" href='{% url "ads:all"%}' >Make Purchase</a>
+                <a class="btn btn-info" href='{% url "ads:all"%}' >Continue Shopping</a>
+              </div>
+            </div>
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+{% endblock %}

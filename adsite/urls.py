@@ -27,6 +27,7 @@ urlpatterns = [
     path('ads/', include('ads.urls',namespace='ads')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('registration/', include('registration.urls',namespace='registration')),
+    path('cart/', include('cart.urls', namespace='cart')),
 ]
 
 # Serve the favicon - Keep for later

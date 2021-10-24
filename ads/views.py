@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.db.utils import IntegrityError
+from cart.forms import CartAddAdForm
 
 from django.db.models import Q
 
@@ -85,6 +86,7 @@ class AdDetail(OwnerDetailView):
         # Call the base implementation first to get a context
         # Add in the publisher
         context['comments'] = comments
+        context['cart_ad_form'] = CartAddAdForm()
         return context
     # def get(self, request, pk) :
     #     x = Ad.objects.get(id=pk)

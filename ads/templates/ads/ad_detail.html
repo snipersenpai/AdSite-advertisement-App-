@@ -44,10 +44,14 @@
                   </div>
                   <p class="lead">{{object.text}}</p>
                   <div class="d-flex">
-                      <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                    <form class="form-group" action='{% url "cart:cart_add" object.id %}' method="post">
+                      {{ cart_ad_form }}
+                      {% csrf_token %}
+                      <button class="btn btn-outline-dark flex-shrink-0" type="submit">
                           <i class="bi-cart-fill me-1"></i>
                           Add to cart
                       </button>
+                    </form>
                   </div>
               </div>
           </div>

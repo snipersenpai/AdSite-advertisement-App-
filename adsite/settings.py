@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'social_django',
     'ads.apps.AdsConfig',
+    'cart.apps.CartConfig',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -122,7 +124,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
+CART_SESSION_ID = 'cart'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
