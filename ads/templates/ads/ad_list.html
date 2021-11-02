@@ -20,23 +20,33 @@
     <div class="container mt-3">
       <div class="d-flex flex-column">
         <div class="row">
-          <div class="col-xs-12 col-md-3 bg-light">
-            <h3>Categories</h3>
-            <ul class="list-group">
-              <li class="list-group-item {% if not category %}bg-info{% endif %}">
-                <a class="{% if not category %}text-dark font-weight-bold {% else %} text-secondary {% endif %}" href="{% url 'ads:all' %}">All</a>
-              </li>
-              {% for cat in categories %}
-                <li class="list-group-item {% if category == cat.slug %}bg-info{% endif %}">
-                  <a class="{% if category == cat.slug %}text-dark font-weight-bold {% else %} text-secondary {% endif %}" href="{{ cat.get_absolute_url }}">
-                    {{cat.name}}
-                  </a>
+          <div class="col-xs-12 col-md-3 bg-light py-3">
+            <div class="">
+              <h3>Categories</h3>
+              <button style="position:absolute; top:0; right:0;" class="btn btn-light text-info d-md-none d-xs-block" type="button" name="button"  data-toggle="collapse" data-target="#collapseCategory" aria-expanded="false" aria-controls="collapseCategory">
+                <i class='fa fa-bars'></i>
+              </button>
+            </div>
+            <div class="show" id='collapseCategory'>
+              <ul class="list-group d-sm-inline" >
+                <li class="list-group-item {% if not category %}bg-info{% endif %}">
+                  <a class="{% if not category %}text-dark font-weight-bold {% else %} text-secondary {% endif %}" href="{% url 'ads:all' %}">All</a>
                 </li>
-              {% endfor %}
+                {% for cat in categories %}
+                  <li class="list-group-item {% if category == cat.slug %}bg-info{% endif %}">
+                    <a class="{% if category == cat.slug %}text-dark font-weight-bold {% else %} text-secondary {% endif %}" href="{{ cat.get_absolute_url }}">
+                      {{cat.name}}
+                    </a>
+                  </li>
+                {% endfor %}
 
-            </ul>
+              </ul>
+            </div>
+
           </div>
+
           <div class="col-xs-12 col-md-9">
+            <hr class="col-xs-12 d-xs-block d-md-none mb-4" />
             <div class="col-12 row">
               {% for ad in object_list %}
                 <div class="col-xs-12 col-md-6 col-lg-4">
