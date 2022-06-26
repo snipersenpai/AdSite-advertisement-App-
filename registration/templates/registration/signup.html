@@ -1,16 +1,21 @@
 {% extends "base_bootstrap.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
 {% if form.errors %}
   <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
+<br>
+<form class="container mt-4" method="post" action="{% url 'registration:signup' %}">
 
-<form class="container" method="post" action="{% url 'registration:signup' %}">
-  <div style="display:block; margin:auto;" class="">
+  <div style="display:block; margin:auto;" class="p-0 m-0">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
     <input type="submit" class="btn btn-primary" value="Sign Up" />
+    <br>
+    <br>
+    <a href="/accounts/login">Have an Account? Login</a>
     <input type="hidden" name="next" value="{{ next }}" />
   </div>
 </form>
