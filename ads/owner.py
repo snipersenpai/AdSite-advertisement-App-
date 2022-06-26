@@ -2,6 +2,9 @@ from django.views.generic import CreateView,UpdateView, DeleteView,DetailView,Li
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 class OwnerListView(ListView):
+    def get_queryset(self):
+        qs = super(OwnerListView,self).get_queryset()
+        return qs.filter(owner=self.request.user)
     pass
 class OwnerDetailView(DetailView):
     pass

@@ -1,0 +1,9 @@
+.card img{
+  max-height: 15em;
+}
+.card-title{
+  max-height: 2.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

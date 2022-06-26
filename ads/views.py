@@ -3,6 +3,7 @@ from .models import *
 from .forms import *
 from .owner import *
 from django.views import View
+from django.views.generic import CreateView,UpdateView, DeleteView,DetailView,ListView
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,10 +16,9 @@ from django.db.models import Q
 
 # Create your views here.
 
-class MainView(OwnerListView):
+class MainView(ListView):
     model = Ad
     category_slug=None
-
     def get(self,request,category_slug=None):
         self.category_slug = category_slug
         return super().get(self,request,category_slug=None)

@@ -21,13 +21,16 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.views.static import serve
 from django.views.generic import TemplateView
+from ads.views import MainView
 
 urlpatterns = [
+    path('',MainView.as_view(),name='all'),
     path('admin/', admin.site.urls),
     path('ads/', include('ads.urls',namespace='ads')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('registration/', include('registration.urls',namespace='registration')),
     path('cart/', include('cart.urls', namespace='cart')),
+    path('orders/',include('orders.urls', namespace='orders'))
 ]
 
 # Serve the favicon - Keep for later

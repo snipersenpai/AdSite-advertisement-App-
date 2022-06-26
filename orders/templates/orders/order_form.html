@@ -1,0 +1,62 @@
+{% extends "base_bootstrap.html" %}
+{% load crispy_forms_tags%}
+{% block content %}
+<div class="jumbotron py-2">
+  <h2>Ad Site</h2>
+</div>
+<div class="container text-right border border-info bg-light">
+  <p>Your Cart: <a href="{% url 'cart:cart_detail'%}">{{cart|length}} items, {{cart.get_total_price}}</a></p>
+</div>
+{% if form.errors %}
+  <p>Oh oh something went wrong!. Please try again.</p>
+{% endif %}
+<div class="container-fluid bg-white mt-5">
+
+  <div class="row">
+    <div class="col-md-8 col-sm-12 bg-light">
+      <form method="post" action="">
+      {% csrf_token %}
+        {{ form|crispy }}
+        <div class="text-center d-block m-2">
+          <input type="submit" class="btn btn-info" value="Checkout" />
+          <input type="hidden" name="next" value="{{ next }}" />
+        </div>
+      </form>
+    </div>
+    <div class="col-md-4 col-sm-12 m-0 p-0">
+      <div class="ml-2 border border-info px-0 m-0">
+        <div class="">
+          <div class=" p-1" >
+            <p class="font-weight-bolder">Coupons applied</p>
+            <div class="text-right">
+              <i>Code: ODNOMDLCJKLLS</i>
+            </div>
+            <hr class="border border-info">
+          </div>
+          <div class="card" style='margin:0; padding:0; width:100%; border: none;'>
+            <div class="card-body">
+              <div class="card-text">
+                <dl class="row">
+                  <dt class="col-12 col-lg-5">Total Price</dt>
+                  <dd class="col-12 col-lg-7 text-right">${{ cart.get_total_price }}</dd>
+                </dl>
+                <dl class="row">
+                  <dt class="col-12 col-lg-5">Discount</dt>
+                  <dd class="col-12 col-lg-7 text-right">-$0.00 </dd>
+                </dl>
+                <dl class="row bg-info">
+                  <dt class="col-12 col-lg-5">Total</dt>
+                  <dd class="col-12 col-lg-7 text-right">${{ cart.get_total_price }}</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+{% endblock %}
