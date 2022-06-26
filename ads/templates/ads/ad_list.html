@@ -1,4 +1,5 @@
 {% extends "base_bootstrap.html" %}
+{% block head %}{% endblock %}
 {% block content %}
     <div class="bg-light py-3">
       <h1 class="">Ads List</h1>
@@ -49,9 +50,9 @@
             <hr class="col-xs-12 d-xs-block d-md-none mb-4" />
             <div class="col-12 row">
               {% for ad in object_list %}
-                <div class="col-xs-12 col-md-6 col-lg-4">
+                <div class="col-xs-12 col-md-6 col-xlg-4">
                   <div class="mb-5">
-                    <div  style='text-decoration:none' class="card text-dark">
+                    <div  style='text-decoration:none' class="card text-dark h-100">
                       <img src="{% url 'ads:ad_picture' ad.id %}" class="card-img-top" alt="...">
                       <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
                       <div class="card-body  p-4 bg-light">

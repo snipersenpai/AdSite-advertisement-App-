@@ -3,8 +3,8 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
-  <div class="container">
-      <h1>Ad Create</h1>
+  <div class="container mt-5 pt-2">
+      <h1>Create A Your New AD</h1>
       <form action="" method="post" id="upload_form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}

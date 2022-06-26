@@ -27,12 +27,12 @@
                   <img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." />
                 {% endif %}
               </div>
-              <div class="col-md-6">
+              <div style="background-color:rgba(37,162,183, 0.1)" class="col-md-6 py-5">
                   <div class="small mb-1 ">
                     ({{ ad.updated_at|naturaltime }})
                     {% if ad.owner == user %}
                         <a href="{% url 'ads:ad_update' object.id %}"><i class="fa fa-pencil"></i></a> |
-                        <a href="{% url 'ads:ad_delete' object.id %}"><i class="fa fa-trash"></i></a></li>
+                        <a href="{% url 'ads:ad_delete' object.id %}"><i class="fa fa-trash"></i></a>
                     {%endif%}
                   </div>
                   <h1 class="display-5 fw-bolder text-info">{{ object.title }}</h1>
@@ -47,7 +47,7 @@
                     <form class="form-group" action='{% url "cart:cart_add" object.id %}' method="post">
                       {{ cart_ad_form }}
                       {% csrf_token %}
-                      <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                      <button class="btn btn-outline-info flex-shrink-0" type="submit">
                           <i class="bi-cart-fill me-1"></i>
                           Add to cart
                       </button>
@@ -69,14 +69,24 @@
                 <input class="btn btn-primary" type="submit" value="Submit" />
             </form>
         </div>
+        <hr>
       {% endif %}
       {% for comment in comments %}
-        <p> {{ comment.text }}
-        ({{ comment.updated_at|naturaltime }})
-        {% if user == comment.owner %}
-            <a href="{% url 'ads:ad_comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
-        {% endif %}
-        </p>
+      <div class="media">
+        <button style='width:3rem; height:3rem; border-radius:50%' class="mr-3" src="..." alt="Generic placeholder image">
+          <i class="fa fa-solid fa-user-astronaut"></i>
+        </button>
+        <div class="media-body">
+          <h5 class="mt-0">{{ comment.owner }}</h5>
+          ({{ comment.updated_at|naturaltime }})<br><br>
+
+          {{ comment.text }}
+          {% if user == comment.owner %}
+              <a href="{% url 'ads:ad_comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
+          {% endif %}
+        </div>
+      </div>
+      <hr>
       {% endfor %}
     <div>
       <a href="{% url 'ads:all' %}" >
